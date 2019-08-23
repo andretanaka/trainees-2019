@@ -1,0 +1,603 @@
+swagger: "2.0"
+info:
+  description: "Sciensa Filmes API"
+  version: "1.0.0"
+  title: "API de Filmes da Sciensa"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    name: "Andre Seiti Tanaka"
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+# host: "filmes.swagger.io"
+# basePath: "/api/v1"
+produces:
+  - "application/json"
+schemes:
+- "https"
+
+tags:
+  - name: filmes
+    description: "Operacoes relacionadas aos filmes"
+  - name: artistas
+    description: "Operacoes relacionadas aos artistas"
+  - name: generos
+    description: "Operacoes relacionadas ao genero"
+  - name: health check
+    description: "Operacoes de health check"
+
+paths:
+  /filmes:
+    post:
+      summary: "Cadastro de filmes"
+      operationId: "createFilme"
+      tags:
+        - filmes
+      parameters:
+      - in: body
+        name: "request"
+        required: true
+        schema:
+          $ref: "#/definitions/Filme"
+      responses:
+        201:
+          description: "Filme cadastrado com sucesso"
+        400:
+          description: "Dados informados do filme são inválidos."
+          schema:
+            $ref: "#/definitions/ResponseError"
+        500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+            
+    get:
+      summary: "Listagem de filmes efetuado com sucesso."
+      operationId: "getFilme"
+      parameters:
+        - $ref: "#/parameters/NumeroItemsPorPagina"
+        - $ref: "#/parameters/QuantidadeDeRegistros"
+        - $ref: "#/parameters/PaginaAtual"
+      tags:
+        - filmes
+      responses:
+        200:
+          description: "Consulta efetuada com sucesso."
+          schema:
+            properties:
+              filmes:
+                type: array
+                items:
+                  $ref: "#/definitions/Filme"
+        500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+            
+  /filmes/{idFilme}:
+    get:
+      summary: "Consulta de informações de um filme específico"
+      operationId: "getFilmeDetails"
+      tags:
+        - filmes
+      parameters:
+      - $ref: "#/parameters/Filme"
+      responses:
+        200:
+          description: "Filme encontrado."
+          schema:
+            $ref: "#/definitions/Filme"
+        400:
+          description: "ID do filme informado está inválida."
+          schema:
+            $ref: "#/definitions/ResponseError"
+        404:
+          description: "Filme não encontrado."
+          schema:
+            $ref: "#/definitions/ResponseError"
+        500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+                
+    put:
+      summary: "Atualização das informações de um filme específico"
+      operationId: "updateFilme"
+      tags:
+        - filmes
+      parameters:
+      - $ref: "#/parameters/Filme"
+      - in: body
+        name: "request"
+        required: true
+        schema:
+          $ref: "#/definitions/Filme"
+      responses:
+        200:
+          description: "Filme atualizado com sucesso"
+        400:
+          description: "Dados do filme informados são inválidos."
+          schema:
+            $ref: "#/definitions/ResponseError"
+        404:
+          description: "Filme não encontrado."
+          schema:
+            $ref: "#/definitions/ResponseError"
+        500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+            
+    delete:
+      summary: "Remove um filme específico"
+      operationId: "removeFilme"
+      tags:
+        - filmes
+      parameters:
+      - $ref: "#/parameters/Filme"
+      responses:
+        200:
+          description: "Filme deletado."
+        400:
+          description: "ID do filme informado está inválida."
+          schema:
+            $ref: "#/definitions/ResponseError"
+        404:
+          description: "Filme não encontrado."
+          schema:
+            $ref: "#/definitions/ResponseError"
+        500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+            
+  # Artistas
+      
+  /artistas:
+    post:
+      summary: "Cadastro de artistas"
+      operationId: "createArtistas"
+      tags:
+        - artistas
+      parameters:
+      - in: body
+        name: "request"
+        required: true
+        schema:
+          $ref: "#/definitions/Artista"
+      responses:
+        201:
+          description: "Artista cadastrado com sucesso"
+        400:
+          description: "Dados informados do artista são inválidos."
+          schema:
+            $ref: "#/definitions/ResponseError"
+        500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+            
+    get:
+      summary: "Lista todos os artistas"
+      operationId: "getArtistas"
+      tags:
+        - artistas
+      parameters:
+        - $ref: "#/parameters/NumeroItemsPorPagina"
+        - $ref: "#/parameters/QuantidadeDeRegistros"
+        - $ref: "#/parameters/PaginaAtual"
+      responses:
+        200:
+          description: "Listagem de artistas efetuada com sucesso."
+          schema:
+            properties:
+              artistas:
+                type: array
+                items:
+                  $ref: "#/definitions/Artista"
+        500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+            
+  /artistas/{idArtista}:
+    get:
+      summary: "Consulta de informações de um artista específico"
+      operationId: "getArtistaDetails"
+      tags:
+        - artistas
+      parameters:
+      - $ref: "#/parameters/Artista"
+      responses:
+        200:
+          description: "Artista encontrado."
+          schema:
+            $ref: "#/definitions/Artista"
+        400:
+          description: "ID do artista informado está inválida."
+          schema:
+            $ref: "#/definitions/ResponseError"
+        404:
+          description: "Artista não encontrado."
+          schema:
+            $ref: "#/definitions/ResponseError"
+        500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+                
+    put:
+      summary: "Atualização das informações de um artista específico"
+      operationId: "updateArtista"
+      tags:
+        - artistas
+      parameters:
+      - $ref: "#/parameters/Artista"
+      - in: body
+        name: "request"
+        required: true
+        schema:
+          $ref: "#/definitions/Artista"
+      responses:
+        200:
+          description: "Artista atualizado com sucesso"
+        400:
+          description: "Dados informados do artista são inválidos."
+          schema:
+            $ref: "#/definitions/ResponseError"
+        404:
+          description: "Artista não encontrado."
+          schema:
+            $ref: "#/definitions/ResponseError"
+        500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+            
+    delete:
+      summary: "Remove um artista específico"
+      operationId: "removeArtista"
+      tags:
+        - artistas
+      parameters:
+      - $ref: "#/parameters/Artista"
+      responses:
+        200:
+          description: "Artista deletado."
+        400:
+          description: "ID do artista informado está inválida."
+          schema:
+            $ref: "#/definitions/ResponseError"
+        404:
+          description: "Artista não encontrado."
+          schema:
+            $ref: "#/definitions/ResponseError"
+        500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+            
+  # Genero Cinematografico
+      
+  /generos-cinematograficos:
+    post:
+      summary: "Cadastro de gêneros cinematográficos"
+      operationId: "createGenerosCinematograficos"
+      tags:
+        - generos
+      parameters:
+      - in: body
+        name: "request"
+        required: true
+        schema:
+          $ref: "#/definitions/GeneroCinematografico"
+      responses:
+        201:
+          description: "Gênero cinematográfico cadastrado com sucesso"
+        400:
+          description: "Dados informados do gênero cinematográfico são inválidos."
+          schema:
+            $ref: "#/definitions/ResponseError"
+        500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+            
+    get:
+      summary: "Lista todos os gêneros cinematográfico"
+      operationId: "getGenerosCinematograficos"
+      tags:
+        - generos
+      parameters:
+        - $ref: "#/parameters/NumeroItemsPorPagina"
+        - $ref: "#/parameters/QuantidadeDeRegistros"
+        - $ref: "#/parameters/PaginaAtual"
+      responses:
+        200:
+          description: "Listagem de gêneros cinematográficos efetuada com sucesso."
+          schema:
+            properties:
+              filmes:
+                type: array
+                items:
+                  $ref: "#/definitions/GeneroCinematografico"
+        500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+            
+  /generos-cinematograficos/{idGeneroCine}:
+    get:
+      summary: "Consulta de informações de um gênero cinematografico específico"
+      operationId: "getGeneroCinematograficoDetails"
+      tags:
+        - generos
+      parameters:
+      - $ref: "#/parameters/GeneroCinematografico"
+      responses:
+        200:
+          description: "Gênero Cinematográfico encontrado."
+          schema:
+            $ref: "#/definitions/GeneroCinematografico"
+        400:
+          description: "ID do gênero cinematográfico informado está inválida."
+          schema:
+            $ref: "#/definitions/ResponseError"
+        404:
+          description: "Gênero Cinematográfico não encontrado."
+          schema:
+            $ref: "#/definitions/ResponseError"
+        500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+                
+    put:
+      summary: "Atualização das informações de um gênero cinematográfico específico"
+      operationId: "updateGeneroCinematografico"
+      tags:
+        - generos
+      parameters:
+      - $ref: "#/parameters/GeneroCinematografico"
+      - in: body
+        name: "request"
+        required: true
+        schema:
+          $ref: "#/definitions/GeneroCinematografico"
+      responses:
+        200:
+          description: "Gênero cinematográfico atualizado com sucesso"
+        400:
+          description: "Dados informados do gênero cinematográfico são inválidos."
+          schema:
+            $ref: "#/definitions/ResponseError"
+        404:
+          description: "Gênero cinematográfico não encontrado."
+          schema:
+            $ref: "#/definitions/ResponseError"
+        500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+    delete:
+      summary: "Remove um genero cinematográfico específico"
+      operationId: "removeGeneroCinematografico"
+      tags:
+        - generos
+      parameters:
+      - $ref: "#/parameters/GeneroCinematografico"
+      responses:
+        200:
+          description: "Gênero Cinematográfico deletado."
+        400:
+          description: "ID do gênero cinematográfico informado está inválida."
+          schema:
+            $ref: "#/definitions/ResponseError"
+        404:
+          description: "Gênero Cinematográfico não encontrado."
+          schema:
+            $ref: "#/definitions/ResponseError"
+        500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+            
+
+
+  /artistas/{idArtista}/filmografia:
+    get:
+      summary: "Retorna a filmografia do artista."
+      description: "Retornar todos os filmes que possuírem o artista cadastrado em seu elenco."
+      operationId: "getFilmografia"
+      tags:
+        - artistas
+      parameters:
+      - $ref: "#/parameters/Artista"
+      - $ref: "#/parameters/NumeroItemsPorPagina"
+      - $ref: "#/parameters/QuantidadeDeRegistros"
+      - $ref: "#/parameters/PaginaAtual"
+      responses:
+        200:
+          description: "Filmografia consultada com sucesso"
+          schema:
+            properties:
+              filmografia:
+                type: array
+                items:
+                  $ref: "#/definitions/Filme"
+        400:
+          description: "ID do artista informado está inválida."
+          schema:
+            $ref: "#/definitions/ResponseError"
+        404:
+          description: "Artista não encontrado."
+          schema:
+            $ref: "#/definitions/ResponseError"
+        500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+          
+  /health:
+    get:
+      summary: "Rota de healthcheck da aplicação"
+      operationId: "health"
+      tags:
+        - health check
+      responses:
+        200:
+          description: "API funcionando"
+          schema:
+            properties:
+              version:
+                type: string
+              environment:
+                type: string
+      
+definitions:
+  ResponseError:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      type:
+        type: string
+      messages:
+        type: array
+        items:
+          type: string
+      cause:
+        type: object
+        properties:
+          name:
+            type: string
+          code:
+            type: number
+          message:
+            type: string
+            
+  Filme:
+    type: object
+    properties:
+      nome:
+        type: string
+      diretor:
+        type: string
+      genero:
+        $ref: "#/definitions/GeneroCinematografico"
+      elenco:
+        type: array
+        items:
+          $ref: "#/definitions/Artista"
+      paisOrigem:
+        type: string
+      idioma:
+        type: string
+      dataLancamento:
+        type: string
+        format: date-time
+      duracao:
+        type: number
+        description: "Duração do filme em minutos"
+        format: int32
+      classificacaoIndicativa:
+        type: string
+      sinopse:
+        type: string
+      trailer:
+        type: string
+        description: "URL do trailer disponivel no Youtube"
+        
+  Artista:
+    type: object
+    properties:
+      id:
+        type: number
+        format: int32
+      nome:
+        type: string
+      dataNascimento:
+        type: string
+        format: date-time
+      paisOrigem:
+        type: string
+      genero:
+        type: string
+        enum: 
+        - "Masculino"
+        - "Feminino"
+        
+        
+  GeneroCinematografico:
+    type: object
+    properties:
+      nome:
+        type: string
+      id:
+        type: number
+        format: int32
+
+parameters:
+  Artista:
+    in: path
+    name: "idArtista"
+    type: number
+    format: int32
+    required: true
+
+  Filme:
+    in: path
+    name: "idFilme"
+    type: number
+    format: int32
+    required: true
+
+  GeneroCinematografico:
+    in: path
+    name: "idGeneroCine"
+    type: number
+    format: int32
+    required: true
+    
+  NumeroItemsPorPagina:
+    in: query
+    name: "limiteItems"
+    description: "Número máximo de items por página"
+    type: integer
+    format: int32
+    minimum: 0
+    maximum: 50
+    default: 20
+    
+  QuantidadeDeRegistros:
+    in: query
+    name: "quantidadeRegistros"
+    description: "Número total de registros retornados"
+    type: integer
+    format: int64
+    
+  PaginaAtual:
+    in: query
+    name: "paginaAtual"
+    description: "Número da página que o usuário se encontra"
+    type: integer
+    format: int64
+    default: 1
+  
+
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /AndreTanaka/Sciensa/1.0.0
+
+  #genero, filme e artista
+    #casdastro
+    #atualizacao
+    #consultada
+    #detalhe
+  #filmografia
+    #consulta
